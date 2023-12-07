@@ -18,7 +18,7 @@ npm i
 npm i -g @nestjs/cli
 ```
 
-4. Levantar DB
+4. MongoDB Atlas
 ```
-docker-compose up -d
+ MONGOURI
 ```
