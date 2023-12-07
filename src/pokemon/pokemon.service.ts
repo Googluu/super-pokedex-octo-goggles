@@ -34,8 +34,8 @@ export class PokemonService {
     return this.pokemonModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} pokemon`;
+  findOne(id: string) {
+    return this.pokemonModel.findById(id);
   }
 
   update(id: number, updatePokemonDto: UpdatePokemonDto) {
