@@ -26,7 +26,7 @@ export class PokemonService {
       const pokemon = await this.pokemonModel.create(createPokemonDto);
       return pokemon;
     } catch (error) {
-      this.handlerDBError(error);
+      this.handlerDBException(error);
     }
   }
 
@@ -70,15 +70,16 @@ export class PokemonService {
       // sobreescribir los datos del pokemon al updatepokemon para retornar el pokemon actualizado
       return { ...pokemon.toJSON(), ...updatePokemonDto };
     } catch (error) {
-      this.handlerDBError(error);
+      this.handlerDBException(error);
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} pokemon`;
+  async remove(id: string) {
+    const pokemon = await this.findOne(id);
+    await pokemon.deleteOne();
   }
 
-  private handlerDBError(error: any) {
+  private handlerDBException(error: any) {
     if (error.code === 11000) {
       throw new BadRequestException(
         `Pokemon exist in db, ${JSON.stringify(error.keyValue)}`,
