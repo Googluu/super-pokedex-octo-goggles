@@ -7,24 +7,23 @@ import { PokemonService } from 'src/pokemon/pokemon.service';
 export class SeedService {
   private readonly axios = axios;
 
-  constructor(
-    private readonly pokemonService: PokemonService
-  ) {}
+  constructor(private readonly pokemonService: PokemonService) {}
 
   async executeSeed() {
-    const { data } = await this.axios.get<PokeResponse>('https://pokeapi.co/api/v2/pokemon/?limit=10');
+    const { data } = await this.axios.get<PokeResponse>(
+      'https://pokeapi.co/api/v2/pokemon/?limit=10',
+    );
 
-    data.results.forEach(({ name, url }) => {
-      const segment = url.split("/");
+    data.results.forEach(async ({ name, url }) => {
+      const segment = url.split('/');
       const no: number = +segment[6];
       let rta = {
         name,
-        no
-      }
+        no,
+      };
       // console.log(rta);
-      this.pokemonService.create(rta)
-    })
-
+      await this.pokemonService.create(rta);
+    });
 
     return 'Seec executed success';
   }
