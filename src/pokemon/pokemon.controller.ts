@@ -3,6 +3,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus
 import { PokemonService } from './pokemon.service';
 
 import { CreatePokemonDto, UpdatePokemonDto } from './dto';
+import { ParseMongoIdPipe } from 'src/common/pipes/parse-mongo-id/parse-mongo-id.pipe';
 
 @Controller('pokemon')
 export class PokemonController {
@@ -30,8 +31,8 @@ export class PokemonController {
   }
 
   @Delete(':id')
-  @HttpCode( HttpStatus.NO_CONTENT )
-  remove(@Param('id') id: string) {
+  // @HttpCode( HttpStatus.NO_CONTENT )
+  remove(@Param('id', ParseMongoIdPipe) id: string) {
     return this.pokemonService.remove(id);
   }
 }
