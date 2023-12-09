@@ -11,6 +11,7 @@ import { Model, isValidObjectId } from 'mongoose';
 import { CreatePokemonDto, UpdatePokemonDto } from './dto';
 
 import { Pokemon } from './entities/pokemon.entity';
+import { PokemonSeed } from './interfaces/pokemon-seed.interface';
 
 @Injectable()
 export class PokemonService {
@@ -80,6 +81,16 @@ export class PokemonService {
       throw new BadRequestException(`Pokemon with id "${ id }" not found`);
     }
     return;
+  }
+
+  // delete * from pokemons
+  async deletePokemonsSeed() {
+    await this.pokemonModel.deleteMany({});
+  }
+
+  // insert into pokemons (name, no)
+  async insertPokemonSeed(pokemonSeed: PokemonSeed[]) {
+    await this.pokemonModel.insertMany(pokemonSeed);
   }
 
   private handlerDBException(error: any) {

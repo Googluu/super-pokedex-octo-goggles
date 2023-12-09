@@ -10,11 +10,14 @@ export class SeedService {
   constructor(private readonly pokemonService: PokemonService) {}
 
   async executeSeed() {
+    this.pokemonService.deletePokemonsSeed();
     const { data } = await this.axios.get<PokeResponse>(
-      'https://pokeapi.co/api/v2/pokemon/?limit=10',
+      'https://pokeapi.co/api/v2/pokemon/?limit=650',
     );
 
-    data.results.forEach(async ({ name, url }) => {
+    const pokemoToInsert: { name: string, no: number }[] = [];
+
+    data.results.forEach(({ name, url }) => {
       const segment = url.split('/');
       const no: number = +segment[6];
       let rta = {
@@ -22,8 +25,11 @@ export class SeedService {
         no,
       };
       // console.log(rta);
-      await this.pokemonService.create(rta);
+      //await this.pokemonService.create(rta);
+      pokemoToInsert.push(rta)
     });
+
+    this.pokemonService.insertPokemonSeed(pokemoToInsert)
 
     return 'Seec executed success';
   }
