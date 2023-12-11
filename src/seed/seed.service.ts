@@ -1,21 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import axios from 'axios';
+// import axios from 'axios';
+
+import { AxiosAdapter } from 'src/common/adapters/apiResponse.adapter';
+
 import { PokeResponse } from './interfaces/poke-response.interface';
+
 import { PokemonService } from 'src/pokemon/pokemon.service';
 
 @Injectable()
 export class SeedService {
-  private readonly axios = axios;
+  // private readonly axios = axios;
 
-  constructor(private readonly pokemonService: PokemonService) {}
+  constructor(
+    private readonly pokemonService: PokemonService,
+    private readonly http: AxiosAdapter,
+  ) {}
 
   async executeSeed() {
     this.pokemonService.deletePokemonsSeed();
-    const { data } = await this.axios.get<PokeResponse>(
+    const data = await this.http.get<PokeResponse>(
       'https://pokeapi.co/api/v2/pokemon/?limit=650',
     );
 
-    const pokemoToInsert: { name: string, no: number }[] = [];
+    const pokemoToInsert: { name: string; no: number }[] = [];
 
     data.results.forEach(({ name, url }) => {
       const segment = url.split('/');
@@ -26,11 +33,11 @@ export class SeedService {
       };
       // console.log(rta);
       //await this.pokemonService.create(rta);
-      pokemoToInsert.push(rta)
+      pokemoToInsert.push(rta);
     });
 
-    this.pokemonService.insertPokemonSeed(pokemoToInsert)
+    this.pokemonService.insertPokemonSeed(pokemoToInsert);
 
-    return 'Seec executed success';
+    return 'Seed executed success';
   }
 }
