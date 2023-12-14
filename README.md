@@ -18,10 +18,7 @@ npm i
 npm i -g @nestjs/cli
 ```
 
-4. MongoDB Atlas
-```
- MONGOURI
-```
+4. Clonar el archivo __.env.template__ y renombrarlo a __.env__
 
 5. Correr el proyecto
 ```
