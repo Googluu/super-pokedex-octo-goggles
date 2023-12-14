@@ -23,7 +23,12 @@ npm i -g @nestjs/cli
  MONGOURI
 ```
 
-5. Reconstruir la base de datos con la semilla
+5. Correr el proyecto
+```
+npm run start:dev
+```
+
+6. Reconstruir la base de datos con la semilla
 ```
 http://localhost:3000/api/v2/seed
 ```
